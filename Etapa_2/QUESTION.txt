@@ -1,0 +1,52 @@
+
+
+1 - Quantas sequências de DNA de paciente sequenciados temos nos arquivos de fastqs R1 e R2 respectivamente ?
+
+Abri o arquivo resultado do FastQC e nele fala quantos reads foram sequenciados no "Basic Statistics"
+No R1 tem 64276 seq.
+No R2 tem 64276 seq.
+
+ 
+2 - Sobre o genoma humano hg19, quantos contigs tem o nosso genoma hg19 (hg19.fasta) aqui disponibilizado para este pipeline ?
+
+
+samtools faidx hg19.fasta
+
+cut -f1 hg19.fasta.fai | wc -l
+
+93 contigs no genoms hg19
+
+3 - Quantos alinhamentos há na região chr17:41197694-41197819 ? 
+
+Com o arquivo 'aling_sorted.bam" indexado no sammtols posso usar esse codigo 
+samtools view align.sorted.bam chr17:41197694-41197819 | wc -l
+
+2211 alinhamentos na regiao de interesse
+
+
+4 - Quantos alinhamentos não conseguiram ser mapeados (unmapped alignments ?) 
+
+No samtools existe um codigo para saber quantos não foram mapeados
+
+samtools view -f 4 aling_sorted.bam | wc -l
+
+2663 nao foram mapeados
+
+
+5 - Realize o alinhamento das sequências FASTQ contra o genoma de referência hg19 aqui disponibilizado, e realize a chamada de variantes utilizando a região alvo BRCA.list (interesse apenas na região dos genes BRCA1 e BRCA2).  Realize a anotação de dados funcionais usando o SNPEFF.
+ Com este arquivo em mãos , responda as seguintes perguntas ?
+
+5.1- Quantas variantes existem com impacto funcional (Annotation_Impact) do tipo HIGH, MODERATE, LOW ? Existe alguma variante em HIGH ? Qual é cromossomo, posição e a alteração ?
+
+# COm esse comando consigo contar quantas variantes 
+grep -i 'TERMO' brca_ann.vcf | wc -l
+
+2 variantes HIGH
+2 variantes MODERATE
+9 variantes LOW 
+
+Das duas variantes HIGH:
+ A primeira ta presente no cromossomo 13, na posição 32914174 a alteração é de C -> G. No gene BRCA2 com impacto de "stop_gained".
+ A segunda ta presente no cromossomo 17, na posição 41222948 a alteração é uma deleção TTCTTCTGGGGTCAGGCCAGA -> TA. NO gene BRCA1 de impacto "frameshift_variant".
+
+
